@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm Payment</title>
+<style>
+body {margin:0; background:#111; color:white; font-family:Arial,sans-serif; display:flex; justify-content:center; align-items:flex-start; padding-top:50px;}
+.card {background:#333; padding:25px; border-radius:12px; text-align:center; width:90%; max-width:450px;}
+h1{ color: gold; margin-bottom:5px;}
+p{ font-size:18px; margin:10px 0; }
+input, button {padding:10px; margin-top:10px; border-radius:6px; border:none; width:100%; font-size:16px; cursor:pointer;}
+button { background:gold; color:black; }
+#uploadedImage {margin-top:10px; display:block; width:100px; height:auto; border-radius:6px;}
+#paymentStatus {margin-top:20px; padding:15px; background:green; color:white; border-radius:8px; display:none;}
+#userProfile {margin-top:15px; font-weight:bold; display:none;}
+#prize:hover {cursor:pointer; text-decoration:none;}
+a { color: gold; }
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Confirm Payment</h1>
+
+<p><strong>Prize:</strong> <span id="prize"></span></p>
+<p><strong>Class:</strong> <span id="class"></span></p>
+<p><strong>Payment Option:</strong> <span id="paymentOptionText"></span></p>
+<p><strong>Total Amount:</strong> $<span id="totalAmount"></span></p>
+<p id="instruction"></p>
+
+<label for="giftCardNumber">Enter Gift Card Number:</label>
+<input type="text" id="giftCardNumber" placeholder="Enter gift card number">
+
+<p>Or upload gift card image/file:</p>
+<input type="file" id="giftUpload" accept="image/*,.jpg,.png,.pdf" style="display:none;">
+<button id="uploadBtn">Select Image</button>
+<img id="uploadedImage" alt="Preview">
+
+<button id="payBtn">Pay</button>
+<div id="paymentStatus"></div>
+
+<!-- Facebook profile display -->
+<p id="userProfile">We will contact the user via this Facebook profile link: <a id="facebookLink" href="#" target="_blank"></a></p>
+</div>
+
+<script>
+// Display dummy prize info
+document.getElementById("prize").textContent = localStorage.getItem("prizeItem") || "N/A";
+document.getElementById("class").textContent = localStorage.getItem("selectedClass") || "Standard";
+document.getElementById("totalAmount").textContent = localStorage.getItem("totalCost") || "0";
+const paymentOption = localStorage.getItem("paymentOption") || "";
+document.getElementById("paymentOptionText").textContent = paymentOption === "full" ? "Full Payment" : "Form + Package";
+document.getElementById("instruction").textContent = paymentOption === "full" ?
+    "Your package will be ready as soon as you make the payment." :
+    "You selected Form + Package. Pay $50 for the form and $150 for the package. Remaining balance can be paid later.";
+
+// Prize admin login
+document.getElementById("prize").onclick = () => {
+    const username = prompt("Enter username:");
+    const password = prompt("Enter password:");
+    if(username === "Audi" && password === "Tesla"){
+        window.location.href = "image.html";
+    } else {
+        alert("Incorrect username or password.");
+    }
+};
+
+// Upload logic
+const uploadBtn = document.getElementById("uploadBtn");
+const giftInput = document.getElementById("giftUpload");
+const uploadedImage = document.getElementById("uploadedImage");
+
+uploadBtn.onclick = () => giftInput.click();
+giftInput.onchange = () => {
+    const file = giftInput.files[0];
+    if(file && file.type.startsWith("image/")){
+        if(!confirm("Do you want to upload this image?")){
+            giftInput.value = "";
+            uploadedImage.style.display = "none";
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = e => {
+            uploadedImage.src = e.target.result;
+            uploadedImage.style.display = "block";
+            uploadedImage.style.width = "100px";
+            uploadedImage.style.height = "auto";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        uploadedImage.style.display = "none";
+    }
+};
+
+// Pay button click
+document.getElementById("payBtn").onclick = () => {
+    const giftCardNumber = document.getElementById("giftCardNumber").value.trim();
+    const fileUploaded = giftInput.files[0];
+    const paymentStatus = document.getElementById("paymentStatus");
+
+    if(!giftCardNumber && !fileUploaded){
+        alert("Please enter gift card number or upload gift card image.");
+        return;
+    }
+
+    paymentStatus.textContent = "Payment will be confirmed shortly while your package is being loaded.";
+    paymentStatus.style.display = "block";
+
+    // Show Facebook profile
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const userProfileElem = document.getElementById("userProfile");
+    const facebookLinkElem = document.getElementById("facebookLink");
+
+    if(userDetails && userDetails.Facebook){
+        facebookLinkElem.href = userDetails.Facebook;
+        facebookLinkElem.textContent = userDetails.Facebook;
+        userProfileElem.style.display = "block";
+    } else {
+        facebookLinkElem.textContent = "Facebook profile not provided.";
+        facebookLinkElem.href = "#";
+        userProfileElem.style.display = "block";
+    }
+};
+</script>
+</body>
+</html>

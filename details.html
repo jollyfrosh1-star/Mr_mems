@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MR MEMS Details</title>
+<style>
+body {margin:0; font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f6f7fb; display:flex; justify-content:center; align-items:center; min-height:100vh;}
+.details-container {background:#fff; padding:40px; border-radius:16px; box-shadow:0 8px 30px rgba(12,18,36,0.08); width:100%; max-width:500px;}
+h2 {margin-top:0; text-align:center; color:#0b67ff;}
+label {display:block; margin-top:15px; font-weight:600; color:#0f172a;}
+input, select {width:100%; padding:12px; margin-top:6px; border-radius:8px; border:1px solid #ccc; font-size:15px;}
+button {width:100%; margin-top:20px; padding:12px; border:none; border-radius:8px; background:#0b67ff; color:#fff; font-size:16px; cursor:pointer;}
+.error {color:#ff4d4f; margin-top:10px; text-align:center; display:none;}
+</style>
+</head>
+<body>
+<div class="details-container">
+<h2>Fill Your Details</h2>
+<form id="detailsForm">
+  <label>Last Name</label>
+  <input type="text" id="lastname" required>
+  <label>First Name</label>
+  <input type="text" id="firstname" required>
+  <label>Other Name</label>
+  <input type="text" id="othername">
+  <label>Date of Birth</label>
+  <input type="date" id="dob" required>
+  <label>Phone Number</label>
+  <div style="display:flex; gap:10px;">
+    <select id="countryCode" required>
+      <option value="">Select country code</option>
+      <option value="+1">+1 USA/Canada</option>
+      <option value="+44">+44 UK</option>
+      <option value="+91">+91 India</option>
+      <option value="+61">+61 Australia</option>
+      <option value="+81">+81 Japan</option>
+      <option value="+49">+49 Germany</option>
+      <option value="+33">+33 France</option>
+      <option value="+"> Others</option>
+    </select>
+    <input type="tel" id="phone" placeholder="Phone number" required>
+  </div>
+  <label>Email</label>
+  <input type="email" id="email" placeholder="example@mail.com" required>
+  <label>Facebook Profile Link</label>
+  <input type="url" id="facebook" placeholder="https://www.facebook.com/yourprofile" required>
+  <button type="submit">Submit Details</button>
+  <div class="error" id="errorMsg">Please fill all fields correctly.</div>
+</form>
+</div>
+
+<script>
+document.getElementById('detailsForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const lastname = document.getElementById('lastname').value.trim();
+  const firstname = document.getElementById('firstname').value.trim();
+  const dob = document.getElementById('dob').value;
+  const code = document.getElementById('countryCode').value;
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const facebook = document.getElementById('facebook').value.trim();
+
+  if(!lastname || !firstname || !dob || !code || !phone || !email || !facebook){
+    document.getElementById('errorMsg').style.display = 'block';
+    return;
+  }
+
+  const details = {
+    LastName: lastname,
+    FirstName: firstname,
+    OtherName: document.getElementById('othername').value.trim(),
+    DateOfBirth: dob,
+    PhoneNumber: code + ' ' + phone,
+    Email: email,
+    Facebook: facebook
+  };
+
+  // Save to localStorage (persistent)
+  localStorage.setItem('userDetails', JSON.stringify(details));
+  window.location.href = 'summary.html';
+});
+</script>
+</body>
+</html>

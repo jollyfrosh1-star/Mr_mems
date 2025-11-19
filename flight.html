@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flight & Delivery</title>
+<style>
+body { 
+    margin:0; 
+    background:#111; 
+    color:white; 
+    font-family:Arial,sans-serif;
+    display:flex; 
+    justify-content:center; 
+    align-items:center; 
+    min-height:100vh; 
+}
+.card { 
+    background:#333; 
+    padding:25px; 
+    border-radius:12px; 
+    text-align:center; 
+    width:90%; 
+    max-width:400px; 
+}
+h1{ color: gold; }
+p{ font-size:18px; margin:10px 0; }
+button { 
+    margin-top:20px; 
+    padding:12px; 
+    border:none; 
+    border-radius:8px; 
+    background:gold; 
+    color:black; 
+    font-size:18px; 
+    cursor:pointer; 
+}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Delivery Details</h1>
+<p><strong>Prize Item:</strong> <span id="prizeItem"></span></p>
+<p><strong>Selected Class:</strong> <span id="selectedClass"></span></p>
+<p><strong>Base Delivery Cost (from Saudi Arabia):</strong> $<span id="baseCost"></span></p>
+<p><strong>Class Extra Cost:</strong> $<span id="classExtra"></span></p>
+<p><strong>Total Cost:</strong> $<span id="totalCost"></span></p>
+
+<button id="proceedPayment">Proceed to Payment</button>
+</div>
+
+<script>
+// Retrieve data
+const prize = localStorage.getItem("prizeItem") || "N/A";
+const selectedClass = localStorage.getItem("selectedClass") || "Standard";
+
+// Base delivery cost per prize
+const baseCosts = {
+   "Cybertruck": 2500,
+   "Lamborghini Urus": 3000,
+   "Audi": 1500,
+   "Rolls Royce": 3500,
+   "Mystery Box": 500
+};
+
+// Class extra cost
+const classExtraCosts = {
+    "Standard": 0,
+    "Business": 200,
+    "VIP": 500
+};
+
+// Calculate total
+const baseCost = baseCosts[prize] || 0;
+const classExtra = classExtraCosts[selectedClass] || 0;
+const totalCost = baseCost + classExtra;
+
+// Display values
+document.getElementById("prizeItem").textContent = prize;
+document.getElementById("selectedClass").textContent = selectedClass;
+document.getElementById("baseCost").textContent = baseCost;
+document.getElementById("classExtra").textContent = classExtra;
+document.getElementById("totalCost").textContent = totalCost;
+
+// Proceed to Payment
+document.getElementById("proceedPayment").onclick = () => {
+    // Save total cost in localStorage for payment page
+    localStorage.setItem("totalCost", totalCost);
+    window.location.href = "payment.html";
+};
+</script>
+</body>
+</html>

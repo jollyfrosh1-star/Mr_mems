@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MR MEMS Summary</title>
+<style>
+body {margin:0; font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f6f7fb; display:flex; justify-content:center; align-items:center; min-height:100vh;}
+.summary-container {background:#fff; padding:40px; border-radius:16px; box-shadow:0 8px 30px rgba(12,18,36,0.08); width:100%; max-width:500px; text-align:center;}
+h2 {margin-top:0; color:#0b67ff;}
+.detail {margin-top:15px; font-size:16px;}
+.label {font-weight:600;}
+.confirm-buttons {margin-top:30px; display:flex; justify-content:center; gap:20px;}
+.confirm-buttons button {padding:12px 20px; font-size:16px; border:none; border-radius:8px; cursor:pointer; color:#fff;}
+.yes-btn {background-color:#4CAF50;}
+.no-btn {background-color:#f44336;}
+</style>
+</head>
+<body>
+<div class="summary-container">
+<h2>Your Submitted Details</h2>
+<div class="detail"><span class="label">Last Name:</span> <span id="lastname"></span></div>
+<div class="detail"><span class="label">First Name:</span> <span id="firstname"></span></div>
+<div class="detail"><span class="label">Other Name:</span> <span id="othername"></span></div>
+<div class="detail"><span class="label">Date of Birth:</span> <span id="dob"></span></div>
+<div class="detail"><span class="label">Phone Number:</span> <span id="phone"></span></div>
+<div class="detail"><span class="label">Email:</span> <span id="email"></span></div>
+<div class="detail"><span class="label">Facebook:</span> <span id="facebook"></span></div>
+<hr style="margin:30px 0;">
+<h2>Are you sure you want to start?</h2>
+<div class="confirm-buttons">
+<button class="yes-btn" onclick="proceedToSpin()">YES</button>
+<button class="no-btn" onclick="alert('You clicked NO. Action cancelled.')">NO</button>
+</div>
+</div>
+
+<script>
+// Retrieve stored user details from localStorage
+const details = JSON.parse(localStorage.getItem('userDetails'));
+if(details){
+  document.getElementById('lastname').textContent = details.LastName;
+  document.getElementById('firstname').textContent = details.FirstName;
+  document.getElementById('othername').textContent = details.OtherName;
+  document.getElementById('dob').textContent = details.DateOfBirth;
+  document.getElementById('phone').textContent = details.PhoneNumber;
+  document.getElementById('email').textContent = details.Email;
+  document.getElementById('facebook').textContent = details.Facebook;
+} else {
+  document.body.innerHTML = '<h2 style="text-align:center; color:#ff4d4f;">No details found. Please fill your information first.</h2>';
+}
+
+function proceedToSpin(){
+  localStorage.setItem('confirmedSummary', 'true');
+  window.location.href = 'confirm.html';
+}
+</script>
+</body>
+</html>

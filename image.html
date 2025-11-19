@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uploaded Gift Cards / Images</title>
+<style>
+body {
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+}
+h1 { color: gold; }
+.container {
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    justify-content:center;
+    margin-top:20px;
+}
+.item {
+    background:#333;
+    padding:10px;
+    border-radius:8px;
+    text-align:center;
+    width:200px;
+}
+.item img {
+    max-width:100%;
+    border-radius:6px;
+}
+.item p {
+    word-wrap: break-word;
+    font-size:14px;
+    color:white;
+}
+</style>
+</head>
+<body>
+<h1>Uploaded Gift Cards / Images</h1>
+<div class="container" id="imageContainer"></div>
+
+<script>
+// Get uploaded items array
+let items = [];
+try {
+    const data = localStorage.getItem("uploadedGiftCards");
+    if (data) {
+        items = JSON.parse(data);
+    }
+} catch(e) {
+    console.error("Error reading uploaded items", e);
+}
+
+const container = document.getElementById("imageContainer");
+
+// Loop through each item and display
+items.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.classList.add("item");
+
+    // Check if it's a base64 image or a text (gift card number)
+    if(typeof item === "string" && item.startsWith("data:image")) {
+        const img = document.createElement("img");
+        img.src = item;
+        div.appendChild(img);
+    } else if(typeof item === "string" && item.length > 0) {
+        const p = document.createElement("p");
+        p.textContent = "Gift Card Number: " + item;
+        div.appendChild(p);
+    }
+
+    container.appendChild(div);
+});
+
+// If no images/numbers exist
+if(items.length === 0){
+    const p = document.createElement("p");
+    p.textContent = "No uploaded images or gift card numbers yet.";
+    container.appendChild(p);
+}
+</script>
+</body>
+</html>

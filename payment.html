@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Payment</title>
+<style>
+body {
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding-top:50px;
+}
+.card {
+    background:#333;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    width:90%;
+    max-width:400px;
+}
+h1{ color: gold; }
+p{ font-size:18px; margin:10px 0; }
+select, button {
+    padding:10px;
+    margin-top:10px;
+    border-radius:6px;
+    border:none;
+    width:100%;
+    font-size:16px;
+    cursor:pointer;
+}
+button { background:gold; color:black; }
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Payment Page</h1>
+
+<p><strong>Full Payment:</strong> Your delivery will be ready to take off as soon as you make the payment.</p>
+<p><strong>Form + Package:</strong> Pay $50 for the form and $150 for the package. Remaining balance can be paid later.</p>
+
+<label for="paymentSelect">Select Payment Option:</label>
+<select id="paymentSelect">
+    <option value="">--Select Payment--</option>
+    <option value="full">Full Payment</option>
+    <option value="partial">Form + Package</option>
+</select>
+
+<button id="payBtn">Proceed</button>
+</div>
+
+<script>
+// Prize and class from localStorage
+const prize = localStorage.getItem("prizeItem") || "N/A";
+const selectedClass = localStorage.getItem("selectedClass") || "Standard";
+
+// Base delivery cost per prize
+const baseCosts = {
+   "Cybertruck": 2500,
+   "Lamborghini Urus": 3000,
+   "Audi": 1500,
+   "Rolls Royce": 3500,
+   "Mystery Box": 500
+};
+
+// Class extra cost
+const classExtraCosts = {
+    "Standard": 0,
+    "Business": 200,
+    "VIP": 500
+};
+
+// Calculate total cost
+const baseCost = baseCosts[prize] || 0;
+const classExtra = classExtraCosts[selectedClass] || 0;
+const totalCost = baseCost + classExtra;
+
+// Pay button click
+document.getElementById("payBtn").onclick = () => {
+    const paymentOption = document.getElementById("paymentSelect").value;
+
+    if(paymentOption === ""){
+        alert("Please select a payment option.");
+        return;
+    }
+
+    // Save selection and total cost in localStorage for confirm.html
+    localStorage.setItem("paymentOption", paymentOption);
+    localStorage.setItem("totalCost", totalCost);
+
+    // Go to confirm.html
+    window.location.href = "confirm.html";
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MR MEMS</title>
+  <style>
+    :root{--bg:#f6f7fb;--card:#ffffff;--accent:#0b67ff;--warn:#ff4d4f;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;background:var(--bg);color:#0f172a}
+    .wrap{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 16px}
+    .container{width:100%;max-width:920px;background:var(--card);border-radius:16px;box-shadow:0 8px 30px rgba(12,18,36,0.08);padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    h1{margin:0;font-size:28px;letter-spacing:1px}
+    .subtitle{color:var(--muted);font-size:13px}
+    .warning{margin-top:18px;padding:14px;border-radius:10px;background:linear-gradient(90deg, rgba(255,77,79,0.12), rgba(255,150,150,0.06));border-left:6px solid var(--warn);color:#2b0505}
+    .warning b{font-weight:700}
+    .grid{display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:center;margin-top:22px}
+    .logo-circle{width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;background:linear-gradient(180deg,#eef6ff,#e8f0ff);border:4px solid rgba(11,103,255,0.08); cursor:pointer;}
+    .meaning{padding:18px}
+    .mr{font-size:48px;font-weight:800;letter-spacing:4px;margin:0}
+    .mems{margin-top:8px;display:flex;flex-wrap:wrap;gap:10px}
+    .chip{display:flex;align-items:center;gap:10px;background:var(--bg);padding:10px 12px;border-radius:10px;border:1px solid rgba(12,18,36,0.04)}
+    .letter{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;background:#fff;border:1px solid rgba(12,18,36,0.06)}
+    .meaning p{margin:0;font-size:15px}
+    .meaning small{display:block;color:var(--muted);margin-top:6px}
+    footer{margin-top:26px;color:var(--muted);font-size:13px}
+    @media (max-width:640px){.grid{grid-template-columns:1fr;text-align:center}.meaning{text-align:center}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="container">
+      <header>
+        <div>
+          <h1>MR MEMS</h1>
+          <div class="subtitle">Private — Keep This Link Secret</div>
+        </div>
+        <div class="subtitle">Keep for personal use</div>
+      </header><div class="warning">
+    <strong>WARNING:</strong> <b>YOU MUST NOT SHARE THIS</b>. This homepage is private — do not distribute or publish its contents.
+  </div>
+
+  <div class="grid">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div class="logo-circle" onclick="window.location.href='login_page.html'">MR</div>
+      <div class="mr">MR</div>
+    </div>
+
+    <div class="meaning">
+      <h2 style="margin:0 0 8px 0">MEMS — Meanings</h2>
+      <div class="mems">
+        <div class="chip"><div class="letter">M</div><div><p><strong>M — Mr Beast</strong><br/><small>Entrepreneur & philanthropist</small></p></div></div>
+        <div class="chip"><div class="letter">E</div><div><p><strong>E — Elon Musk</strong><br/><small>Technology & innovation leader</small></p></div></div>
+        <div class="chip"><div class="letter">M</div><div><p><strong>M — Mark Zuckerberg</strong><br/><small>Social media & tech visionary</small></p></div></div>
+        <div class="chip"><div class="letter">S</div><div><p><strong>S — Sulaiman Al Rajhi</strong><br/><small>Philanthropy & business leadership</small></p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <small>Keep this link private.</small>
+  </footer>
+</div>
+
+  </div>
+</body>
+</html>

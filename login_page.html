@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MR MEMS Login</title>
+  <style>
+    body {margin:0; font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f6f7fb; display:flex; justify-content:center; align-items:center; height:100vh;}
+    .login-container {background:#fff; padding:40px; border-radius:16px; box-shadow:0 8px 30px rgba(12,18,36,0.08); width:100%; max-width:400px;}
+    h2 {margin-top:0; text-align:center; color:#0b67ff;}
+    label {display:block; margin-top:15px; font-weight:600; color:#0f172a;}
+    input, textarea {width:100%; padding:12px; margin-top:6px; border-radius:8px; border:1px solid #ccc; font-size:15px;}
+    button {width:100%; margin-top:20px; padding:12px; border:none; border-radius:8px; background:#0b67ff; color:#fff; font-size:16px; cursor:pointer;}
+    .error {color:#ff4d4f; margin-top:10px; text-align:center; display:none;}
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to MR MEMS</h2>
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Enter username" required>
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter password" required>
+      <button type="submit">Login</button>
+      <div class="error" id="errorMsg">Invalid username or password</div>
+    </form>
+  </div>  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if(user === 'Mr mems' && pass === 'secret'){
+        window.location.href = 'details.html'; // redirect to details form after login
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    });
+  </script></body>
+</html>
